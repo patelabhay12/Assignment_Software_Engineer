@@ -1,0 +1,30 @@
+function validateCustomerPreference() {
+    var customerName = Xrm.Page.getAttribute("customer_name").getValue();
+    var preferenceType = Xrm.Page.getAttribute("preference_type").getValue();
+    var description = Xrm.Page.getAttribute("description").getValue();
+
+    // Check if Customer Name is not empty
+    if (!customerName) {
+        Xrm.Page.ui.setFormNotification("Customer Name is mandatory.", "ERROR");
+        return false;
+    }
+
+    // Check if Preference Type is selected
+    if (!preferenceType) {
+        Xrm.Page.ui.setFormNotification("Preference Type is required.", "ERROR");
+        return false;
+    }
+
+    // Check if Description does not exceed 500 characters
+    if (description && description.length > 500) {
+        Xrm.Page.ui.setFormNotification("Description should not exceed 500 characters.", "ERROR");
+        return false;
+    }
+
+    // Clear any existing notifications
+    Xrm.Page.ui.clearFormNotification();
+    return true;
+}
+
+// Attach the function to the form OnSave event
+Xrm.Page.data.entity.addOnSave(validateCustomerPreference);
